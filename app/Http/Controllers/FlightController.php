@@ -30,8 +30,11 @@ class FlightController extends Controller
 
         $flights_to = Flight::with(['bookings_from.passengers', 'bookings_back.passengers'])->where('from_id', $airport_from->id)
         ->where('to_id', $airport_to->id)->get();
-        $flights_back = Flight::with(['bookings_from.passengers', 'bookings_back.passengers'])->where('from_id', $airport_to->id)
+
+        $flights_back = empty($data['date2']) ? collect() : 
+        Flight::with(['bookings_from.passengers', 'bookings_back.passengers'])->where('from_id', $airport_to->id)
         ->where('to_id', $airport_from->id)->get();
+        
 
         return [
             'data' => [
